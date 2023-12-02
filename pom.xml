@@ -14,12 +14,19 @@
 	<name>soap-service-integration</name>
 	<description>Spring boot Integration With SOAP service</description>
 	<properties>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
+		<maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
 		</dependency>
 
 		<dependency>
@@ -34,8 +41,64 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${project.parent.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/xjc</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>${maven-jaxb2-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>example-xml</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generateDirectory>${basedir}/src/main/java</generateDirectory>
+							<schemaDirectory>${basedir}/src/main/resources</schemaDirectory>
+							<schemaIncludes>
+								<include>**/*.xsd</include>
+							</schemaIncludes>
+							<bindingDirectory>${basedir}/src/main/resources/schemas/xjb</bindingDirectory>
+							<bindingIncludes>
+								<include>**/*.xjb</include>
+							</bindingIncludes>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.glassfish.jaxb</groupId>
+						<artifactId>jaxb-runtime</artifactId>
+						<version>2.3.3</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
 
 </project>
+
+
+
+
+
