@@ -31,6 +31,8 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: 9665838396/soap-integration
+          tags: latestß
           registry: docker.io
+          dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
